@@ -27,7 +27,7 @@
           in pkgs.writeShellScriptBin "code" script;
       in
       {
-        defaultPackage = { extensions ? [], userDir }: code { inherit extensions userDir; };
+        packages.default = { extensions ? [], userDir }: code { inherit extensions userDir; };
         
         nix-code = code;
 
