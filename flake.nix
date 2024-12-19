@@ -27,7 +27,7 @@
           in pkgs.writeShellScriptBin "code" script;
       in
       {
-        defaultPackage.${system} = { extensions ? [], userDir }: code;
+        defaultPackage = { extensions ? [], userDir }: code;
 
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
