@@ -27,6 +27,8 @@
           in pkgs.writeShellScriptBin "code" script;
       in
       {
+        code = { extensions ? [], userDir }: code;
+
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
             pkgs.nixpkgs-fmt
