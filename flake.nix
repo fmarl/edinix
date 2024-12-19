@@ -27,8 +27,8 @@
           in pkgs.writeShellScriptBin "code" script;
       in
       {
-        defaultPackage = { extensions ? [], userDir }: code;
-
+        defaultPackage = { extensions ? [], userDir }: code { inherit extensions userDir; };
+        
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
             pkgs.nixpkgs-fmt
@@ -38,7 +38,7 @@
                   vscode-marketplace.mkhl.direnv
                 ];
 
-                userDir = "$HOME/.vscode/${self}";
+                userDir = "${builtins.getEnv "HOME"}/.vscode/${self}";
             })
           ];
         };
