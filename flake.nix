@@ -29,6 +29,8 @@
       {
         defaultPackage = { extensions ? [], userDir }: code { inherit extensions userDir; };
         
+        nix-code = code;
+
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
             pkgs.nixpkgs-fmt
