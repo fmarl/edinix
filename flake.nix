@@ -3,10 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { self, nixpkgs, flake-utils, nix-vscode-extensions, ... }:
+  outputs = { self, nixpkgs, flake-utils, extensions, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -16,7 +16,7 @@
           };
         };
 
-        vscode-marketplace = nix-vscode-extensions.extensions.${system}.vscode-marketplace;
+        vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
 
         code = { extensions ? [], userDir }: let 
           script = ''
@@ -27,9 +27,11 @@
           in pkgs.writeShellScriptBin "code" script;
       in
       {
-        packages.default = { extensions ? [], userDir }: code { inherit extensions userDir; };
+        packages.default = code;
         
-        nix-code = code;
+        vscode = code;
+        
+        extensions = vscode-marketplace;
 
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
@@ -40,7 +42,7 @@
                   vscode-marketplace.mkhl.direnv
                 ];
 
-                userDir = "${builtins.getEnv "HOME"}/.vscode/${self}";
+                userDir = "$HOME/.vscode/${self}";
             })
           ];
         };
