@@ -18,11 +18,17 @@
 
         vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
 
-        code = { extensions ? [], userDir }: let 
+        code = { extensions ? [], userDir ? ""}: let 
           script = ''
             #!/usr/bin/env bash
 
-            ${(pkgs.vscode-with-extensions.override { vscodeExtensions = extensions; })}/bin/code --user-data-dir ${userDir} $@
+            if [ -z ${userDir} ]; then
+                USER_DIR="/tmp/nix-code/''$(uuidgen)/"
+            else
+                USER_DIR=${userDir}
+            fi
+
+            ${(pkgs.vscode-with-extensions.override { vscodeExtensions = extensions; })}/bin/code --user-data-dir ''$USER_DIR $@
             '';
           in pkgs.writeShellScriptBin "code" script;
       in
@@ -41,8 +47,6 @@
                   vscode-marketplace.bbenoist.nix
                   vscode-marketplace.mkhl.direnv
                 ];
-
-                userDir = "$HOME/.vscode/${self}";
             })
           ];
         };
