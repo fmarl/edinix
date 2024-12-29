@@ -21,6 +21,7 @@ let
       enable = false;
       vscodeExtensions = [
         vscode-marketplace.rust-lang.rust-analyzer
+        vscode-marketplace.tamasfe.even-better-toml
       ];
     };
 
