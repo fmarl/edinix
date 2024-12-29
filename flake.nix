@@ -7,12 +7,6 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, extensions, ... }:
-    let
-      inherit (import ./modules/profiles.nix { inherit extensions; }) profiles;
-      code = import ./modules/code.nix {
-        inherit nixpkgs extensions profiles;
-      };
-    in
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -20,22 +14,24 @@
           config = { allowUnfree = true; };
         };
 
-        selectedNativeBuildInputs = builtins.concatLists (builtins.attrValues (builtins.filterAttrs (_: v: v.nativeBuildInputs) profiles));
+        vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
+
+        profileDefinitions = import ./lib/profiles.nix { inherit pkgs vscode-marketplace; };
+
+        code = import ./lib/code.nix {
+          inherit pkgs profileDefinitions;
+        };
       in
       {
         packages.default = code;
 
-        vscode = code;
-
-        extensions = extensions.extensions.${system}.vscode-marketplace;
-
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = builtins.concatLists [
-            selectedNativeBuildInputs
+          nativeBuildInputs = [
+            pkgs.nixpkgs-fmt
+
             (code {
               profiles = {
-                nix = true;
-                rust = true;
+                nix = { enable = true; };
               };
             })
           ];

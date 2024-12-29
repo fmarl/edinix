@@ -1,39 +1,53 @@
-{ extensions }:
+{ pkgs, vscode-marketplace }:
 let
-  vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
-in
-{
-  profiles = {
-    nix = {
-      vscodeExtensions = with vscode-marketplace; [
-        bbenoist.nix
-        mkhl.direnv
-        jnoortheen.nix-ide
+  profileDefinitions = {
+    # The default extensions are active, unless we deactivate them explicitly.
+    default = {
+      enable = true;
+      vscodeExtensions = [
+        vscode-marketplace.mkhl.direnv
       ];
+    };
 
-      nativeBuildInputs = with pkgs; [
-        nixpkgs-fmt
+    nix = {
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.bbenoist.nix
+        vscode-marketplace.jnoortheen.nix-ide
       ];
     };
 
     rust = {
-      vscodeExtensions = with vscode-marketplace; [
-        mkhl.direnv
-        rust-lang.rust
-        matklad.rust-analyzer
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.rust-lang.rust-analyzer
       ];
+    };
 
-      nativeBuildInputs = with pkgs; [];
+    go = {
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.golang.go
+      ];
     };
 
     haskell = {
-      vscodeExtensions = with vscode-marketplace; [
-        mkhl.direnv
-        haskell.haskell
-        justusadam.language-haskell
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.haskell.haskell
       ];
-
-      nativeBuildInputs = with pkgs; [];
     };
   };
+in
+{
+  getEnabledExtensions = activeProfiles:
+    builtins.concatLists (builtins.filter
+      (x: x != null)
+      (builtins.map
+        (name:
+          if (builtins.hasAttr name activeProfiles && activeProfiles.${name}.enable && builtins.hasAttr name profileDefinitions) || (profileDefinitions.${name}.enable)
+          then profileDefinitions.${name}.vscodeExtensions
+          else null)
+        (builtins.attrNames profileDefinitions)
+      ));
 }
