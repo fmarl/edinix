@@ -7,46 +7,36 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, extensions, ... }:
+    let
+      inherit (import ./modules/profiles.nix { inherit extensions; }) profiles;
+      code = import ./modules/code.nix {
+        inherit nixpkgs extensions profiles;
+      };
+    in
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          config = {
-            allowUnfree = true;
-          };
+          config = { allowUnfree = true; };
         };
 
-        vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
-
-        code = { extensions ? [], userDir ? ""}: let 
-          script = ''
-            #!/usr/bin/env bash
-
-            if [ -z ${userDir} ]; then
-                USER_DIR="/tmp/nix-code/''$(uuidgen)/"
-            else
-                USER_DIR=${userDir}
-            fi
-
-            ${(pkgs.vscode-with-extensions.override { vscodeExtensions = extensions; })}/bin/code --user-data-dir ''$USER_DIR $@
-            '';
-          in pkgs.writeShellScriptBin "code" script;
+        selectedNativeBuildInputs = builtins.concatLists (builtins.attrValues (builtins.filterAttrs (_: v: v.nativeBuildInputs) profiles));
       in
       {
         packages.default = code;
-        
+
         vscode = code;
-        
-        extensions = vscode-marketplace;
+
+        extensions = extensions.extensions.${system}.vscode-marketplace;
 
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [
-            pkgs.nixpkgs-fmt
+          nativeBuildInputs = builtins.concatLists [
+            selectedNativeBuildInputs
             (code {
-                extensions = [
-                  vscode-marketplace.bbenoist.nix
-                  vscode-marketplace.mkhl.direnv
-                ];
+              profiles = {
+                nix = true;
+                rust = true;
+              };
             })
           ];
         };
