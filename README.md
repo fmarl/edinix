@@ -1,2 +1,2 @@
-# nix-code
+# code-nix
 vscode wrapper for NixOS
