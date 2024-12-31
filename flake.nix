@@ -30,9 +30,7 @@
             pkgs.nixpkgs-fmt
 
             (code {
-              profiles = {
-                nix = { enable = true; };
-              };
+              profiles.nix.enable = true;
             })
           ];
         };
