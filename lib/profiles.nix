@@ -24,7 +24,12 @@ let
       ];
     };
 
-    cpp = c;
+    cpp = {
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
+      ];
+    };
 
     rust = {
       enable = false;
