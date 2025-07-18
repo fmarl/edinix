@@ -17,6 +17,20 @@ let
       tooling = [ pkgs.nil pkgs.nixfmt ];
     };
 
+    c = {
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
+      ];
+    };
+
+    cpp = {
+      enable = false;
+      vscodeExtensions = [
+        vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
+      ];
+    };
+
     rust = {
       enable = false;
       vscodeExtensions = [
