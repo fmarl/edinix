@@ -28,15 +28,31 @@
         profileDefinitions = import ./lib/profiles.nix { inherit pkgs vscode-marketplace; };
 
         code = import ./lib/code.nix { inherit pkgs profileDefinitions; };
+
+        mkDevShell =
+          profileName:
+          let
+            code-with-profile = code { profiles."${profileName}".enable = true; };
+          in
+          pkgs.mkShell {
+            nativeBuildInputs = [
+              code-with-profile.editor
+              code-with-profile.tooling
+            ];
+          };
       in
       {
         packages.default = code;
 
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [
-            (code { profiles.nix.enable = true; }).editor
-            (code { profiles.nix.enable = true; }).tooling
-          ];
+        devShells = {
+          default = mkDevShell "nix";
+          c = mkDevShell "c";
+          cpp = mkDevShell "cpp";
+          rust = mkDevShell "rust";
+          go = mkDevShell "go";
+          clojure = mkDevShell "clojure";
+          haskell = mkDevShell "haskell";
+          sh = mkDevShell "sh";
         };
       }
     );

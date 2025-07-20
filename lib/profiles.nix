@@ -11,15 +11,17 @@ let
 
     nix = {
       enable = false;
-      vscodeExtensions = [
-        vscode-marketplace.bbenoist.nix
-        vscode-marketplace.jnoortheen.nix-ide
+
+      vscodeExtensions = with vscode-marketplace; [
+        jnoortheen.nix-ide
       ];
-      tooling = [
-        pkgs.nil
-        pkgs.nixfmt
-        pkgs.nixfmt-tree
+
+      tooling = with pkgs; [
+        nil
+        nixfmt
+        nixfmt-tree
       ];
+
       settings = {
         nix.enableLanguageServer = true;
         nix.formatterPath = "nixfmt";
@@ -28,63 +30,78 @@ let
 
     c = {
       enable = false;
-      vscodeExtensions = [
-        vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
+
+      vscodeExtensions = with vscode-marketplace; [
+        llvm-vs-code-extensions.vscode-clangd
       ];
+
       tooling = [ ];
+
       settings = { };
     };
 
     cpp = {
       enable = false;
-      vscodeExtensions = [
-        vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
+
+      vscodeExtensions = with vscode-marketplace; [
+        llvm-vs-code-extensions.vscode-clangd
       ];
+
       tooling = [ ];
+
       settings = { };
     };
 
     rust = {
       enable = false;
-      vscodeExtensions = [
-        vscode-marketplace.rust-lang.rust-analyzer
-        vscode-marketplace.tamasfe.even-better-toml
+
+      vscodeExtensions = with vscode-marketplace; [
+        rust-lang.rust-analyzer
+        tamasfe.even-better-toml
       ];
+
       tooling = [ ];
+
       settings = { };
     };
 
     go = {
       enable = false;
-      vscodeExtensions = [ vscode-marketplace.golang.go ];
-      tooling = [
-        pkgs.go
-        pkgs.gopls
-        pkgs.gotools
-        pkgs.go-tools
-        pkgs.gopkgs
-        pkgs.golangci-lint
-        pkgs.delve
-        pkgs.gotests
+
+      vscodeExtensions = with vscode-marketplace; [ golang.go ];
+
+      tooling = with pkgs; [
+        go
+        gopls
+        gotools
+        go-tools
+        gopkgs
+        golangci-lint
+        delve
+        gotests
       ];
+
       settings = { };
     };
 
     clojure = {
       enable = false;
-      vscodeExtensions = [
-        vscode-marketplace.betterthantomorrow.calva
-        vscode-marketplace.betterthantomorrow.calva-spritz
+
+      vscodeExtensions = with vscode-marketplace; [
+        betterthantomorrow.calva
+        betterthantomorrow.calva-spritz
       ];
-      tooling = [
-        pkgs.clojure
-        pkgs.clojure-lsp
-        pkgs.clj-kondo
-        pkgs.cljstyle
-        pkgs.leiningen
-        pkgs.rlwrap
-        pkgs.openjdk
+
+      tooling = with pkgs; [
+        clojure
+        clojure-lsp
+        clj-kondo
+        cljstyle
+        leiningen
+        rlwrap
+        openjdk
       ];
+
       settings = {
         calva.clojureLspPath = "clojure-lsp";
         clojure-lsp.trace.server = "verbose";
@@ -93,8 +110,29 @@ let
 
     haskell = {
       enable = false;
-      vscodeExtensions = [ vscode-marketplace.haskell.haskell ];
+
+      vscodeExtensions = with vscode-marketplace; [ haskell.haskell ];
+
       tooling = [ ];
+
+      settings = { };
+    };
+
+    sh = {
+      enable = false;
+
+      vscodeExtensions = with vscode-marketplace; [
+        mads-hartmann.bash-ide-vscode
+        mkhl.shfmt
+        timonwong.shellcheck
+      ];
+
+      tooling = with pkgs; [
+        bash-language-server
+        shfmt
+        shellcheck
+      ];
+
       settings = { };
     };
   };
