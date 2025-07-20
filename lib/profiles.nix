@@ -125,6 +125,7 @@ let
         mads-hartmann.bash-ide-vscode
         mkhl.shfmt
         timonwong.shellcheck
+        editorconfig.editorconfig
       ];
 
       tooling = with pkgs; [
