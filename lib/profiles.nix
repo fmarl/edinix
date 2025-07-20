@@ -85,8 +85,10 @@ let
         pkgs.rlwrap
         pkgs.openjdk
       ];
-      settings = { };
-    };
+      settings = { 
+        calva.clojureLspPath = "clojure-lsp";
+        clojure-lsp.trace.server = "verbose";
+      };
 
     haskell = {
       enable = false;
