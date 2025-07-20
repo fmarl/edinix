@@ -85,10 +85,11 @@ let
         pkgs.rlwrap
         pkgs.openjdk
       ];
-      settings = { 
+      settings = {
         calva.clojureLspPath = "clojure-lsp";
         clojure-lsp.trace.server = "verbose";
       };
+    };
 
     haskell = {
       enable = false;
@@ -132,7 +133,7 @@ let
 in
 {
   getEnabledExtensions = extractFromProfiles "vscodeExtensions" builtins.concatLists;
-  
+
   getTooling = extractFromProfiles "tooling" builtins.concatLists;
 
   getSettings =
