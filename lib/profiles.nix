@@ -6,6 +6,7 @@ let
       enable = true;
       vscodeExtensions = [ vscode-marketplace.mkhl.direnv ];
       tooling = [ ];
+      settings = { };
     };
 
     nix = {
@@ -14,7 +15,15 @@ let
         vscode-marketplace.bbenoist.nix
         vscode-marketplace.jnoortheen.nix-ide
       ];
-      tooling = [ pkgs.nil pkgs.nixfmt ];
+      tooling = [
+        pkgs.nil
+        pkgs.nixfmt
+        pkgs.nixfmt-tree
+      ];
+      settings = {
+        nix.enableLanguageServer = true;
+        nix.formatterPath = "nixfmt";
+      };
     };
 
     c = {
@@ -22,6 +31,8 @@ let
       vscodeExtensions = [
         vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
       ];
+      tooling = [ ];
+      settings = { };
     };
 
     cpp = {
@@ -29,6 +40,8 @@ let
       vscodeExtensions = [
         vscode-marketplace.llvm-vs-code-extensions.vscode-clangd
       ];
+      tooling = [ ];
+      settings = { };
     };
 
     rust = {
@@ -38,6 +51,7 @@ let
         vscode-marketplace.tamasfe.even-better-toml
       ];
       tooling = [ ];
+      settings = { };
     };
 
     go = {
@@ -53,6 +67,7 @@ let
         pkgs.delve
         pkgs.gotests
       ];
+      settings = { };
     };
 
     clojure = {
@@ -70,31 +85,57 @@ let
         pkgs.rlwrap
         pkgs.openjdk
       ];
+      settings = { };
     };
 
     haskell = {
       enable = false;
       vscodeExtensions = [ vscode-marketplace.haskell.haskell ];
       tooling = [ ];
+      settings = { };
     };
   };
 
-  isActive = activeProfiles: name:
-    ((builtins.hasAttr name activeProfiles && activeProfiles.${name}.enable
-      && builtins.hasAttr name profileDefinitions)
-      || (profileDefinitions.${name}.enable));
-in {
-  getEnabledExtensions = activeProfiles:
-    builtins.concatLists (builtins.filter (x: x != null) (builtins.map (name:
-      if (isActive activeProfiles name) then
-        profileDefinitions.${name}.vscodeExtensions
-      else
-        null) (builtins.attrNames profileDefinitions)));
+  isActive =
+    activeProfiles: name:
+    (
+      (
+        builtins.hasAttr name activeProfiles
+        && activeProfiles.${name}.enable
+        && builtins.hasAttr name profileDefinitions
+      )
+      || (profileDefinitions.${name}.enable)
+    );
 
-  getTooling = activeProfiles:
-    builtins.concatLists (builtins.filter (x: x != null) (builtins.map (name:
-      if (isActive activeProfiles name) then
-        profileDefinitions.${name}.tooling
-      else
-        null) (builtins.attrNames profileDefinitions)));
+  flattenAttrs =
+    prefix: attrs:
+    builtins.foldl' (
+      acc: key:
+      let
+        val = attrs.${key};
+        fullKey = if prefix == "" then key else "${prefix}.${key}";
+      in
+      if builtins.isAttrs val then acc // (flattenAttrs fullKey val) else acc // { "${fullKey}" = val; }
+    ) { } (builtins.attrNames attrs);
+
+  extractFromProfiles =
+    fieldName: combineFn: activeProfiles:
+    combineFn (
+      builtins.filter (x: x != null) (
+        builtins.map (
+          name: if isActive activeProfiles name then profileDefinitions.${name}.${fieldName} else null
+        ) (builtins.attrNames profileDefinitions)
+      )
+    );
+in
+{
+  getEnabledExtensions = extractFromProfiles "vscodeExtensions" builtins.concatLists;
+  
+  getTooling = extractFromProfiles "tooling" builtins.concatLists;
+
+  getSettings =
+    activeProfiles:
+    flattenAttrs "" (
+      extractFromProfiles "settings" (builtins.foldl' (acc: x: acc // x) { }) activeProfiles
+    );
 }
