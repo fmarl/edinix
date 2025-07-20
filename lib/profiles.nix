@@ -62,7 +62,9 @@ let
 
       tooling = [ ];
 
-      settings = { };
+      settings = { 
+        rust-analyzer.server.path = "rust-analyzer";
+      };
     };
 
     go = {
