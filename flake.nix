@@ -23,21 +23,22 @@
           };
         };
 
+        emacsProfileDefinitions = import ./lib/emacs/profiles.nix { inherit pkgs; };
+        emacs = import ./lib/emacs/editor.nix { inherit pkgs emacsProfileDefinitions; };
+
         vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
-
-        profileDefinitions = import ./lib/profiles.nix { inherit pkgs vscode-marketplace; };
-
-        code = import ./lib/code.nix { inherit pkgs profileDefinitions; };
+        codeProfileDefinitions = import ./lib/code/profiles.nix { inherit pkgs vscode-marketplace; };
+        code = import ./lib/code/editor.nix { inherit pkgs codeProfileDefinitions; };
 
         mkDevShell =
-          profileName:
+          editor: profileName:
           let
-            code-with-profile = code { profiles."${profileName}".enable = true; };
+            editor-with-profile = editor { profiles."${profileName}".enable = true; };
           in
           pkgs.mkShell {
             nativeBuildInputs = [
-              code-with-profile.editor
-              code-with-profile.tooling
+              editor-with-profile.editor
+              editor-with-profile.tooling
             ];
           };
       in
@@ -45,14 +46,23 @@
         packages.default = code;
 
         devShells = {
-          default = mkDevShell "nix";
-          c = mkDevShell "c";
-          cpp = mkDevShell "cpp";
-          rust = mkDevShell "rust";
-          go = mkDevShell "go";
-          clojure = mkDevShell "clojure";
-          haskell = mkDevShell "haskell";
-          sh = mkDevShell "sh";
+          default = mkDevShell code "nix";
+
+          emacs = {
+            nix = mkDevShell emacs "nix";
+            c = mkDevShell emacs "c";
+            cpp = mkDevShell emacs "cpp";
+          };
+
+          code = {
+            c = mkDevShell code "c";
+            cpp = mkDevShell code "cpp";
+            rust = mkDevShell code "rust";
+            go = mkDevShell code "go";
+            clojure = mkDevShell code "clojure";
+            haskell = mkDevShell code "haskell";
+            sh = mkDevShell code "sh";
+          };
         };
       }
     );

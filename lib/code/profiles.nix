@@ -35,7 +35,7 @@ let
         llvm-vs-code-extensions.vscode-clangd
       ];
 
-      tooling = [ ];
+      tooling = with pkgs; [ clang-tools ];
 
       settings = { };
     };
@@ -47,7 +47,7 @@ let
         llvm-vs-code-extensions.vscode-clangd
       ];
 
-      tooling = [ ];
+      tooling = with pkgs; [ clang-tools ];
 
       settings = { };
     };

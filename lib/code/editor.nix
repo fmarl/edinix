@@ -1,12 +1,12 @@
-{ pkgs, profileDefinitions }:
+{ pkgs, codeProfileDefinitions }:
 {
   profiles ? { },
   extraExtensions ? [ ],
   userDir ? "",
 }:
 let
-  tooling = profileDefinitions.getTooling profiles;
-  settings = profileDefinitions.getSettings profiles;
+  tooling = codeProfileDefinitions.getTooling profiles;
+  settings = codeProfileDefinitions.getSettings profiles;
 
   script = ''
     #!/usr/bin/env bash
@@ -23,7 +23,7 @@ let
 
     ${
       (pkgs.vscode-with-extensions.override {
-        vscodeExtensions = (profileDefinitions.getEnabledExtensions profiles) ++ extraExtensions;
+        vscodeExtensions = (codeProfileDefinitions.getEnabledExtensions profiles) ++ extraExtensions;
       })
     }/bin/code --user-data-dir "$USER_DIR" "$@"
   '';
