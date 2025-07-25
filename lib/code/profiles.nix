@@ -113,7 +113,10 @@ let
     haskell = {
       enable = false;
 
-      vscodeExtensions = with vscode-marketplace; [ haskell.haskell ];
+      vscodeExtensions = with vscode-marketplace; [ 
+        haskell.haskell
+        justusadam.language-haskell
+      ];
 
       tooling = [ ];
 
