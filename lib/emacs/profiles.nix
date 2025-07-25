@@ -44,7 +44,8 @@ let
     nix = {
       enable = false;
 
-      emacsPackages = [
+      emacsPackages = with epkgs.melpaStablePackages; [
+        nix-mode
       ];
 
       tooling = with pkgs; [

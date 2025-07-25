@@ -52,6 +52,7 @@
             nix = mkDevShell emacs "nix";
             c = mkDevShell emacs "c";
             cpp = mkDevShell emacs "cpp";
+            ats = mkDevShell emacs "ats";
           };
 
           code = {
