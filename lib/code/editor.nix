@@ -3,7 +3,7 @@
   profiles ? { },
   extraExtensions ? [ ],
   userDir ? "",
-  projectSettings ? [ ],
+  projectSettings ? { },
 }:
 let
   tooling = codeProfileDefinitions.getTooling profiles;
