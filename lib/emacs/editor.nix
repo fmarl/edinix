@@ -2,15 +2,20 @@
 {
   profiles ? { },
   extraExtensions ? [ ],
+  projectSettings ? [ ],
 }:
 let
   tooling = emacsProfileDefinitions.getTooling profiles;
-  settings = emacsProfileDefinitions.getSettings profiles;
-  extensions = (emacsProfileDefinitions.getEnabledExtensions profiles) ++ extraExtensions;
 
-  emacsWithPackages = pkgs.emacs.pkgs.withPackages extensions;
+  emacsWithPackages = pkgs.emacs.pkgs.withPackages (
+    (emacsProfileDefinitions.getEnabledExtensions profiles) ++ extraExtensions
+  );
 
-  init = pkgs.writeText "init.el" settings;
+  init = pkgs.writeText "init.el" (
+    pkgs.lib.concatMapStringsSep "\n" builtins.readFile (
+      (emacsProfileDefinitions.getSettings profiles) ++ projectSettings
+    )
+  );
 in
 {
   tooling = tooling;

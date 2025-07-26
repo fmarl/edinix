@@ -178,9 +178,5 @@ in
 
   getTooling = extractFromProfiles "tooling" builtins.concatLists;
 
-  getSettings =
-    profiles:
-    pkgs.lib.concatMapStringsSep "\n" builtins.readFile (
-      extractFromProfiles "settings" builtins.concatLists profiles
-    );
+  getSettings = extractFromProfiles "settings" builtins.concatLists;
 }

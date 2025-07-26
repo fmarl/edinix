@@ -3,10 +3,11 @@
   profiles ? { },
   extraExtensions ? [ ],
   userDir ? "",
+  projectSettings ? [ ],
 }:
 let
   tooling = codeProfileDefinitions.getTooling profiles;
-  settings = codeProfileDefinitions.getSettings profiles;
+  settings = (codeProfileDefinitions.getSettings profiles) ++ projectSettings;
 
   script = ''
     #!/usr/bin/env bash

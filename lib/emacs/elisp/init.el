@@ -27,7 +27,7 @@
   (:map global-map
 	("C-c SPC" . 'ace-jump-mode)))
 
-(set-frame-font "Source Code Pro:size=12")
+(set-frame-font "Source Code Pro:size=14")
 (load-theme 'monokai-pro t)
 (add-hook 'find-file-hook (lambda () (display-line-numbers-mode 1))) ; Line Nr
 (column-number-mode 1)
@@ -41,13 +41,3 @@
 (ido-mode t)
 (winner-mode 1)
 (beacon-mode)
-(direnv-mode)
-
-;; Chill the gc
-(setq gc-cons-threshold most-positive-fixnum) 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (expt 2 23))))
-
-;; Backup-diretory and Server
-(setf backup-directory-alist '((".*" . "~/.saves/")))
