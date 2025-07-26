@@ -41,3 +41,9 @@
 (ido-mode t)
 (winner-mode 1)
 (beacon-mode)
+
+(custom-set-variables
+ '(custom-safe-themes
+   '("bc8780ed55c4a554d651966dce7f54647409b0036fc90de1aeb28eff07257678"
+     "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e"
+     default)))
