@@ -27,6 +27,7 @@
 	("C-c SPC" . 'ace-jump-mode)))
 
 (set-frame-font "Source Code Pro:size=14")
+(setq custom-safe-themes t)
 (load-theme 'monokai-pro t)
 (add-hook 'find-file-hook (lambda () (display-line-numbers-mode 1))) ; Line Nr
 (column-number-mode 1)
