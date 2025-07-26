@@ -111,7 +111,10 @@ let
     clojure = {
       enable = false;
 
-      emacsPackages = [ ];
+      emacsPackages = with epkgs.melpaStablePackages; [
+        cider
+        clojure-mode
+      ];
 
       tooling = with pkgs; [
         clojure
@@ -129,7 +132,10 @@ let
     haskell = {
       enable = false;
 
-      emacsPackages = [ ];
+      emacsPackages = with epkgs.melpaStablePackages; [
+        haskell-mode
+        lsp-haskell
+      ];
 
       tooling = [ ];
 
