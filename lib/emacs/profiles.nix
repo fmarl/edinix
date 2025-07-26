@@ -113,7 +113,6 @@ let
 
       emacsPackages = with epkgs.melpaStablePackages; [
         cider
-        clojure-mode
       ];
 
       tooling = with pkgs; [
