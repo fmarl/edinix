@@ -43,8 +43,8 @@
           };
       in
       {
-        packages.code = code;
-        packages.emacs = emacs;
+        code = code;
+        emacs = emacs;
 
         devShells = {
           default = mkDevShell code "nix";

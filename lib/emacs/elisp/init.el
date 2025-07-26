@@ -1,15 +1,9 @@
+(require 'package)
+(package-initialize)
+
 (setq custom-safe-themes t)
 
 (use-package smart-mode-line)
-(use-package markdown-mode)
-
-(use-package monokai-pro-theme
-  :config
-  (load-theme 'monokai-pro t))
-
-(use-package beacon
-  :config
-  (beacon-mode))
 
 (use-package smart-mode-line-powerline-theme
   :after smart-mode-line
@@ -33,6 +27,16 @@
   :bind
   (:map global-map
 	("C-c SPC" . 'ace-jump-mode)))
+
+(use-package monokai-pro-theme
+  :config
+  (load-theme 'monokai-pro t))
+
+(use-package beacon
+  :config
+  (beacon-mode))
+
+(use-package markdown-mode)
 
 (set-frame-font "Source Code Pro:size=14")
 (add-hook 'find-file-hook (lambda () (display-line-numbers-mode 1)))
