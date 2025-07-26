@@ -182,7 +182,8 @@ in
 
   getSettings =
     activeProfiles:
+    projectSettings:
     flattenAttrs "" (
-      extractFromProfiles "settings" (builtins.foldl' (acc: x: acc // x) { }) activeProfiles
+      (extractFromProfiles "settings" (builtins.foldl' (acc: x: acc // x) { }) activeProfiles) // projectSettings
     );
 }

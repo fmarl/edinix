@@ -7,8 +7,7 @@
 }:
 let
   tooling = codeProfileDefinitions.getTooling profiles;
-  settings = (codeProfileDefinitions.getSettings profiles) ++ projectSettings;
-
+  settings = codeProfileDefinitions.getSettings profiles projectSettings;
   script = ''
     #!/usr/bin/env bash
 
