@@ -4,7 +4,6 @@
 (require 'smart-mode-line)
 (require 'markdown-mode)
 (require 'monokai-pro-theme)
-(require 'direnv)
 (require 'beacon)
 
 (use-package smart-mode-line-powerline-theme
