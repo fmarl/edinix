@@ -1,5 +1,5 @@
 {
-  description = "code-nix";
+  description = "edinix";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -29,6 +29,9 @@
         vscode-marketplace = extensions.extensions.${system}.vscode-marketplace;
         codeProfileDefinitions = import ./lib/code/profiles.nix { inherit pkgs vscode-marketplace; };
         code = import ./lib/code/editor.nix { inherit pkgs codeProfileDefinitions; };
+
+        helixProfileDefinitions = import ./lib/helix/profiles.nix { inherit pkgs; };
+        helix = import ./lib/helix/editor.nix { inherit pkgs helixProfileDefinitions; };
 
         mkDevShell =
           editor: profileName:
@@ -64,6 +67,16 @@
             clojure = mkDevShell code "clojure";
             haskell = mkDevShell code "haskell";
             sh = mkDevShell code "sh";
+          };
+
+          helix = {
+            c = mkDevShell helix "c";
+            cpp = mkDevShell helix "cpp";
+            rust = mkDevShell helix "rust";
+            go = mkDevShell helix "go";
+            clojure = mkDevShell helix "clojure";
+            haskell = mkDevShell helix "haskell";
+            sh = mkDevShell helix "sh";
           };
         };
       }
