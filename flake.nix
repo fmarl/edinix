@@ -61,6 +61,7 @@
           };
 
           code = {
+            nix = mkDevShell code "nix";
             c = mkDevShell code "c";
             cpp = mkDevShell code "cpp";
             rust = mkDevShell code "rust";
@@ -71,6 +72,7 @@
           };
 
           helix = {
+            nix = mkDevShell helix "nix";
             c = mkDevShell helix "c";
             cpp = mkDevShell helix "cpp";
             rust = mkDevShell helix "rust";

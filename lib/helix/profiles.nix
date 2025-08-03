@@ -5,6 +5,9 @@ let
     default = {
       enable = true;
       tooling = [ ];
+      settings = {
+        theme = "autumn";
+      };
     };
 
     nix = {
@@ -15,24 +18,32 @@ let
         nixfmt
         nixfmt-tree
       ];
+
+      settings = { };
     };
 
     c = {
       enable = false;
 
       tooling = with pkgs; [ clang-tools ];
+
+      settings = { };
     };
 
     cpp = {
       enable = false;
 
       tooling = with pkgs; [ clang-tools ];
+
+      settings = { };
     };
 
     rust = {
       enable = false;
 
       tooling = [ ];
+
+      settings = { };
     };
 
     go = {
@@ -48,6 +59,8 @@ let
         delve
         gotests
       ];
+
+      settings = { };
     };
 
     clojure = {
@@ -62,12 +75,16 @@ let
         rlwrap
         openjdk
       ];
+
+      settings = { };
     };
 
     haskell = {
       enable = false;
 
       tooling = [ ];
+
+      settings = { };
     };
 
     sh = {
@@ -78,6 +95,8 @@ let
         shfmt
         shellcheck
       ];
+
+      settings = { };
     };
   };
 
@@ -104,4 +123,6 @@ let
 in
 {
   getTooling = extractFromProfiles "tooling" builtins.concatLists;
+
+  getSettings = extractFromProfiles "settings" (builtins.foldl' (acc: x: acc // x) { });
 }
