@@ -48,6 +48,7 @@
       {
         code = code;
         emacs = emacs;
+        helix = helix;
 
         devShells = {
           default = mkDevShell code "nix";
