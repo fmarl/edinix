@@ -1,6 +1,6 @@
 # edinix
 
-**edinix** is a Nix flake that provides preconfigured editor environments for various programming languages using either **Emacs** or **Visual Studio Code**. Each editor environment includes language-specific extensions, tools, and settings, making it easy to spin up a consistent development environment with minimal setup.
+**edinix** is a Nix flake that provides preconfigured editor environments for various programming languages using either **Helix**, **Emacs** or **Visual Studio Code**. Each editor environment includes language-specific extensions, tools, and settings, making it easy to spin up a consistent development environment with minimal setup.
 
 ## Features
 
