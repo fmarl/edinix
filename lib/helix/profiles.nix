@@ -25,7 +25,6 @@ let
             display-messages = true;
           };
 
-
           statusline = {
             left = [
               "mode"
@@ -78,6 +77,19 @@ let
       enable = false;
 
       tooling = [ ];
+
+      settings = { };
+    };
+
+    python = {
+      enable = false;
+
+      tooling = with pkgs; [
+        (python3.withPackages (python-pkgs: [
+          python-pkgs.ruff
+          python-pkgs.python-lsp-ruff
+        ]))
+      ];
 
       settings = { };
     };

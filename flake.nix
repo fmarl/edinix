@@ -66,6 +66,7 @@
             cpp = mkDevShell code "cpp";
             rust = mkDevShell code "rust";
             go = mkDevShell code "go";
+            python = mkDevShell code "python";
             clojure = mkDevShell code "clojure";
             haskell = mkDevShell code "haskell";
             sh = mkDevShell code "sh";
@@ -77,6 +78,7 @@
             cpp = mkDevShell helix "cpp";
             rust = mkDevShell helix "rust";
             go = mkDevShell helix "go";
+            python = mkDevShell helix "python";
             clojure = mkDevShell helix "clojure";
             haskell = mkDevShell helix "haskell";
             sh = mkDevShell helix "sh";

@@ -33,6 +33,7 @@ let
 
       vscodeExtensions = with vscode-marketplace; [
         llvm-vs-code-extensions.vscode-clangd
+        usernamehw.errorlens
       ];
 
       tooling = with pkgs; [ clang-tools ];
@@ -45,6 +46,7 @@ let
 
       vscodeExtensions = with vscode-marketplace; [
         llvm-vs-code-extensions.vscode-clangd
+        usernamehw.errorlens
       ];
 
       tooling = with pkgs; [ clang-tools ];
@@ -58,11 +60,12 @@ let
       vscodeExtensions = with vscode-marketplace; [
         rust-lang.rust-analyzer
         tamasfe.even-better-toml
+        usernamehw.errorlens
       ];
 
       tooling = [ ];
 
-      settings = { 
+      settings = {
         rust-analyzer.server.path = "rust-analyzer";
       };
     };
@@ -81,6 +84,27 @@ let
         golangci-lint
         delve
         gotests
+      ];
+
+      settings = { };
+    };
+
+    python = {
+      enable = false;
+
+      vscodeExtensions = with vscode-marketplace; [
+        ms-python.python
+        tamasfe.even-better-toml
+        ninoseki.vscode-mogami
+        usernamehw.errorlens
+        charliermarsh.ruff
+      ];
+
+      tooling = with pkgs; [
+        (python3.withPackages (python-pkgs: [
+          python-pkgs.ruff
+          python-pkgs.python-lsp-ruff
+        ]))
       ];
 
       settings = { };
@@ -113,9 +137,10 @@ let
     haskell = {
       enable = false;
 
-      vscodeExtensions = with vscode-marketplace; [ 
+      vscodeExtensions = with vscode-marketplace; [
         haskell.haskell
         justusadam.language-haskell
+        usernamehw.errorlens
       ];
 
       tooling = [ ];
@@ -131,6 +156,7 @@ let
         mkhl.shfmt
         timonwong.shellcheck
         editorconfig.editorconfig
+        usernamehw.errorlens
       ];
 
       tooling = with pkgs; [
@@ -181,9 +207,9 @@ in
   getTooling = extractFromProfiles "tooling" builtins.concatLists;
 
   getSettings =
-    activeProfiles:
-    projectSettings:
+    activeProfiles: projectSettings:
     flattenAttrs "" (
-      (extractFromProfiles "settings" (builtins.foldl' (acc: x: acc // x) { }) activeProfiles) // projectSettings
+      (extractFromProfiles "settings" (builtins.foldl' (acc: x: acc // x) { }) activeProfiles)
+      // projectSettings
     );
 }
