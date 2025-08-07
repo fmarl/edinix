@@ -98,13 +98,15 @@ let
         ninoseki.vscode-mogami
         usernamehw.errorlens
         charliermarsh.ruff
+        ms-pyright.pyright
       ];
 
       tooling = with pkgs; [
-        (python3.withPackages (python-pkgs: [
+        (python3Full.withPackages (python-pkgs: [
           python-pkgs.ruff
           python-pkgs.python-lsp-ruff
         ]))
+        pyright
       ];
 
       settings = { };
