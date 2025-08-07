@@ -85,7 +85,7 @@ let
       enable = false;
 
       tooling = with pkgs; [
-        (python3Full.withPackages (python-pkgs: [
+        (python3.withPackages (python-pkgs: [
           python-pkgs.ruff
           python-pkgs.python-lsp-ruff
         ]))
