@@ -81,6 +81,17 @@ let
       settings = { };
     };
 
+    zig = {
+      enable = false;
+
+      tooling = with pkgs; [
+        zig
+        zls
+      ];
+
+      settings = { };
+    };
+
     python = {
       enable = false;
 

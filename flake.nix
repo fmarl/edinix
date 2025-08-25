@@ -51,7 +51,7 @@
         helix = helix;
 
         devShells = {
-          default = mkDevShell code "nix";
+          default = mkDevShell helix "nix";
 
           emacs = {
             nix = mkDevShell emacs "nix";
@@ -78,6 +78,7 @@
             cpp = mkDevShell helix "cpp";
             rust = mkDevShell helix "rust";
             go = mkDevShell helix "go";
+            zig = mkDevShell helix "zig";
             python = mkDevShell helix "python";
             clojure = mkDevShell helix "clojure";
             haskell = mkDevShell helix "haskell";
